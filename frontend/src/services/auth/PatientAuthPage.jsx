@@ -3,8 +3,9 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import { motion } from 'framer-motion';
+import { API_URL as BASE_API_URL } from "../../config";
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = `${BASE_API_URL}/auth`;
 
 const PatientAuthPage = () => {
   const navigate = useNavigate();

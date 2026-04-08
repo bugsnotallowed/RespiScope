@@ -30,6 +30,7 @@ module.exports = (io) => {
         socket.userId = payload.id; // Keep user ID too just in case
         socket.role = payload.role;
         console.log("Socket authenticated profile:", socket.role, socket.profileId);
+        socket.emit("auth-success", socket.profileId);
       } catch (err) {
         console.log("Socket auth failed:", err.message);
         socket.emit("auth-error", "Invalid token");

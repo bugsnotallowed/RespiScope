@@ -10,6 +10,7 @@ import { Activity } from "lucide-react";
 //import Navbar from "../utils/Navbar";
 import { socket } from "../../socket";
 import api from "../../services/api/api";
+import { API_URL as BASE_API_URL } from "../../config";
 import {
   Send,
   Paperclip,
@@ -62,18 +63,48 @@ const SendMessagePage = () => {
     }
   };
 
+  /* ---------------- SOUND HELPER ---------------- */
+  const playNotificationSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(600, audioCtx.currentTime); // frequency in Hz
+      oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+      
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 0.05);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.3);
+    } catch (err) {
+      console.error("Audio playback failed", err);
+    }
+  };
+
   /* ---------------- SOCKET SETUP ---------------- */
   useEffect(() => {
     if (!consultationId) return;
 
     socket.connect();
     socket.emit("authenticate", token);
-    socket.emit("join-consultation", { consultationId });
+
+    socket.on("auth-success", () => {
+      socket.emit("join-consultation", { consultationId });
+    });
 
     socket.on("new-message", (msg) => {
-      setMessages((prev) =>
-        prev.some((m) => m._id === msg._id) ? prev : [...prev, msg]
-      );
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === msg._id)) return prev;
+        playNotificationSound();
+        return [...prev, msg];
+      });
     });
 
     socket.on("ai-analysis-complete", (updatedMsg) => {
@@ -90,6 +121,7 @@ const SendMessagePage = () => {
       socket.off("new-message");
       socket.off("ai-analysis-complete");
       socket.off("message-deleted");
+      socket.off("auth-success");
       socket.disconnect();
     };
   }, [consultationId, token]);
@@ -162,6 +194,7 @@ const SendMessagePage = () => {
       });
 
       setMessages((prev) => [...prev, res.data.data]);
+      playNotificationSound();
       setFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
@@ -170,8 +203,7 @@ const SendMessagePage = () => {
     }
   };
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
-  const FILE_BASE_URL = API_URL.replace("/api", "/api/messages/file/public");
+  const FILE_BASE_URL = BASE_API_URL.replace("/api", "/api/messages/file/public");
 
   const runAIAnalysis = async (messageId) => {
     try {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { API_URL as BASE_API_URL } from "../../../config";
 import { Button } from "../../ui/Button";
 import { Card } from "../../ui/Card";
 import { Input } from "../../ui/Input";
@@ -88,7 +89,7 @@ export default function PatientPortal() {
         formData.append("messageType", "audio");
 
         try {
-          await fetch("http://localhost:5000/message/file", {
+          await fetch(`${BASE_API_URL}/message/file`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
             body: formData,

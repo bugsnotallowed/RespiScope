@@ -9,6 +9,7 @@ import { Card, CardContent } from "../../ui/Card";
 import api from "../../../services/api/api";
 import { useToast } from "../../../hooks/useToast";
 import { ToastContainer } from "../../ui/Toast";
+import { API_URL as BASE_API_URL } from "../../../config";
 
 const PatientDetails = () => {
   const { toasts, addToast, removeToast } = useToast();
@@ -80,8 +81,7 @@ const PatientDetails = () => {
       addToast("AI Analysis failed: " + (err.response?.data?.error || err.message), "error");
     }
   };
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
-  const FILE_BASE_URL = API_URL.replace("/api", "/api/messages/file/public");
+  const FILE_BASE_URL = BASE_API_URL.replace("/api", "/api/messages/file/public");
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-[#041d14] via-[#0b2b22] to-[#10141a]">
