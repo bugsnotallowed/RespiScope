@@ -13,7 +13,7 @@ const DoctorDashboard = lazy(() => import("./components/pages/doctor/DrDashboard
 const PatientDashboard = lazy(() => import("./components/pages/patient/PtDashboard"));
 const DrPatients = lazy(() => import("./components/pages/doctor/DrPatients"));
 const SendMessagePage = lazy(() => import("./components/pages/sendMessagePage"));
-const DoctorPatientChat = lazy(() => import("./components/pages/ChatMessage"));
+
 const PatientDetails = lazy(() => import("./components/pages/doctor/PatientDetails"));
 const AdminDashboard = lazy(() => import("./components/pages/AdminDashboard"));
 const AdminAuth = lazy(() => import("./services/auth/AdminAuthPage"));

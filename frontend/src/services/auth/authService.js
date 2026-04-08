@@ -3,7 +3,7 @@ import api from '../api/api';
 // Shared
 const login = async (role, { phone, password }) => {
   const res = await api.post(`/auth/login/${role}`, { phone, password });
-  const { accessToken, user, role: resRole } = res.data || {};
+  const { accessToken, role: resRole } = res.data || {};
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('role', resRole || role);
@@ -40,7 +40,7 @@ export const loginPatient = (credentials) => login('patient', credentials);
 export const registerDoctor = (payload) => register('doctor', payload);
 export const registerPatient = (payload) => register('patient', payload);
 
-export default {
+const authService = {
   login,
   register,
   logout,
@@ -50,3 +50,5 @@ export default {
   registerDoctor,
   registerPatient
 };
+
+export default authService;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { 
-  Menu, Moon, Users, TrendingUp, UserPlus, User, Trash2, 
+  Menu, Moon, Users, TrendingUp, User, Trash2, 
   Settings, FileText, Wifi 
 } from 'lucide-react';
 

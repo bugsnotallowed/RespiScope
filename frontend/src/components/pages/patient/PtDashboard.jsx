@@ -4,15 +4,10 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react";
 import { AuthContext } from "../../../context/authContext";
-import PatientCard from "../../utils/PatientCard"
-import { Home, Mic, User, Users, Clock, LogOut, Activity, UserCheck, Calendar, Stethoscope, MessageSquare, ArrowRight, Phone, Mail, Award, Briefcase } from "lucide-react"
+import { Home, User, Users, Clock, Activity, UserCheck, Calendar, Stethoscope, MessageSquare, ArrowRight, Phone, Mail, Award, Briefcase } from "lucide-react"
 import { Button } from "../../ui/Button"
-import { Card, CardContent, CardTitle, CardHeader } from "../../ui/Card"
-import History from "../../utils/History"
-import PatientPortal from "../../utils/record/Record"
-import PaitentDoctors from "../../utils/patientDoctors"
+import { Card, CardContent } from "../../ui/Card"
 import { getDoctors } from "../../../services/api/doctorService"
-import { DoctorCard } from "../../utils/DoctorCard"
 import PatientProfile from "../../utils/PatientProfile"
 import AuscultationGuide from "../../utils/AuscultationGuide"
 import Navbar from "../../utils/Navbar"
@@ -20,11 +15,10 @@ import { createConsultation, getPatientConsultations } from "../../../services/a
 import { motion } from "framer-motion"
 
 const PatientDashboard = () => {
-  const { user, login } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("Home")
   const navigate = useNavigate()
 
-  const handleLogout = () => navigate("/")
   const { role } = useContext(AuthContext);
 
   const tabs = [

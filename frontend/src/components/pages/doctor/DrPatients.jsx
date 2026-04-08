@@ -9,12 +9,6 @@ import { Search, User } from "lucide-react"
 import PatientCard from "../../utils/PatientCard"
 import { getPatients } from "../../../services/api/patientService.js";
 
-// const patients = [
-//   { id: 1, name: "John Smith", age: 45, gender: "Male", lastVisit: "2024-01-15", condition: "Hypertension", status: "Active" },
-//   { id: 2, name: "Sarah Johnson", age: 32, gender: "Female", lastVisit: "2024-01-14", condition: "Asthma", status: "Active" },
-//   { id: 3, name: "Michael Brown", age: 58, gender: "Male", lastVisit: "2024-01-13", condition: "Diabetes", status: "Follow-up" },
-//   { id: 4, name: "Emily Davis", age: 28, gender: "Female", lastVisit: "2024-01-12", condition: "Migraine", status: "Active" },
-// ]
 
 const DrPatients = () => {
   const [searchTerm, setSearchTerm] = useState("")

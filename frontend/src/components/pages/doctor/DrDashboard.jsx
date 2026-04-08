@@ -2,9 +2,9 @@
 
 import { useState, useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { Home, Mic, User, Users, Clock, LogOut, Activity, UserCheck, Calendar, Stethoscope, UserPlus, UserPen, ClipboardClock, CalendarCheck, MessageSquare, ArrowRight, Phone, Mail } from "lucide-react"
+import { Home, User, Users, Clock, Activity, UserCheck, Calendar, Stethoscope, UserPen, ClipboardClock, CalendarCheck, MessageSquare, ArrowRight } from "lucide-react"
 import { Button } from "../../ui/Button"
-import { Card, CardContent, CardTitle, CardHeader } from "../../ui/Card"
+import { Card, CardContent } from "../../ui/Card"
 import { AuthContext } from "../../../context/authContext.js"
 import { getPatients } from "../../../services/api/patientService.js"
 import { getDoctorConsultations, getConsultationsMessages } from "../../../services/api/consultationService.js"
@@ -13,12 +13,11 @@ import Navbar from "../../utils/Navbar"
 import { motion } from "framer-motion"
 
 const DoctorDashboard = () => {
-  const { user, login } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [activeTab, setActiveTab] = useState("Dashboard")
   const navigate = useNavigate()
 
-  const handleLogout = () => navigate("/")
 
   const tabs = [
     { name: "Dashboard", icon: <Home className="w-4 h-4" /> },
@@ -27,12 +26,6 @@ const DoctorDashboard = () => {
     { name: "Profile", icon: <UserPen className="w-4 h-4" /> },
   ]
 
-  const metrics = [
-    { title: "Total Patients", value: "4", subtitle: "Registered patients", icon: <Users /> },
-    { title: "Consultations", value: "0", subtitle: "Total consultations", icon: <UserCheck /> },
-    { title: "Pending", value: "0", subtitle: "Awaiting review", icon: <ClipboardClock /> },
-    { title: "Experience", value: "12", subtitle: "Years of practice", icon: <CalendarCheck /> },
-  ]
 
   const [patients, setPatients] = useState([]);
   const [consultations, setConsultations] = useState([]);

@@ -82,8 +82,6 @@ const AuscultationGuide = () => {
 
   // Theme Constants
   const isLungs = activeOrgan === 'lungs';
-  const themeColor = isLungs ? 'teal' : 'red';
-  const themeHex = isLungs ? 'rgba(45, 212, 191, 1)' : 'rgba(248, 113, 113, 1)';
   const themeHexFaded = isLungs ? 'rgba(45, 212, 191, 0.4)' : 'rgba(239, 68, 68, 0.4)';
 
   return (

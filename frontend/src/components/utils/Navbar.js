@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom"
 import { Button } from "../ui/Button"
-import { Home, Mic, User, Users, Clock, LogOut, Activity, UserCheck, Calendar, Stethoscope, Menu } from "lucide-react"
+import { LogOut, Stethoscope } from "lucide-react"
 
 const Navbar = ({ userType = "doctor", userName = "User", userCode = "CODE123" }) => {
   const navigate = useNavigate()

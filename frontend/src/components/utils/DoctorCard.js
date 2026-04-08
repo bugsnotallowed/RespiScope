@@ -1,7 +1,6 @@
 import { Card, CardTitle } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Calendar, MapPin, Phone } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export function DoctorCard({ doctor, onConsult }) {
   return (

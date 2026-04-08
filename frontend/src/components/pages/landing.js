@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
-import { Facebook, Instagram, ArrowUpRight, ArrowRight, ShieldCheck, Activity, Wifi } from "lucide-react";
+import { ArrowUpRight, ArrowRight, ShieldCheck, Activity, Wifi } from "lucide-react";
 import heroBodyImage from "../../assets/images/hero-body-lungs.png";
 
 const Landing = () => {

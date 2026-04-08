@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
-import { Phone, Lock, Eye, EyeOff, User, LetterText, Calendar, Hospital, Map, PenIcon } from 'lucide-react';
+import { Phone, Lock, Eye, EyeOff, LetterText, Calendar, Hospital, Map, PenIcon } from 'lucide-react';
 import { motion } from "framer-motion";
 import { API_URL as BASE_API_URL } from "../../config";
 

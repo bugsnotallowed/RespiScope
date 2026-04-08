@@ -1,5 +1,5 @@
 import { Button } from "../ui/Button";
-import { Heart, Mic, User, Users, Clock, LogOut } from "lucide-react";
+import { Clock } from "lucide-react";
 
 const History = () => (
     <main className="px-6 py-8">

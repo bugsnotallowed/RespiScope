@@ -1,12 +1,11 @@
 import { useState, useContext, useEffect, useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { Button } from "../ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import AudioWaveform from "../ui/AudioWaveform";
 import LiveAudioStream from "../ui/LiveAudioStream";
 import AIAnalysisCard from "../ui/AIAnalysisCard";
-import { Activity } from "lucide-react";
+import { Activity, CheckCheck } from "lucide-react";
 //import Navbar from "../utils/Navbar";
 import { socket } from "../../socket";
 import api from "../../services/api/api";
@@ -20,14 +19,9 @@ import {
   File,
   Video,
   Music,
-  Check,
-  CheckCheck,
-  Clock,
   User,
   Stethoscope,
   Phone,
-  Mail,
-  Calendar,
   FolderOpen,
   X,
   Zap,
@@ -39,7 +33,6 @@ import { ToastContainer } from "../ui/Toast";
 const SendMessagePage = () => {
   const { user, role } = useContext(AuthContext);
   const { consultationId } = useParams();
-  const { state } = useLocation();
 
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -139,7 +132,7 @@ const SendMessagePage = () => {
     };
 
     fetchMessages();
-  }, [consultationId]);
+  }, [consultationId, addToast]);
 
   /* ---------------- FETCH RECEIVER INFO ---------------- */
   useEffect(() => {
