@@ -1,360 +1,189 @@
-import { Link } from "react-router-dom"
-import { Button } from "../ui/Button"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card"
-import Navbar from "../utils/Navbar"
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
+import { Facebook, Instagram, ArrowUpRight, ArrowRight, ShieldCheck, Activity, Wifi } from "lucide-react";
+import heroBodyImage from "../../assets/images/hero-body-lungs.png";
 
 const Landing = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      {/* Header */}
-      {/* <header className="bg-white/80 backdrop-blur-md shadow-sm border-b sticky top-0 z-50 animate-[slideDown_0.5s_ease-out]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-6 h-6 text-white animate-[pulse_2s_ease-in-out_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
+    <div className="bg-gradient-to-br from-[#041d14] via-[#0b2b22] to-[#10141a] text-gray-100 overflow-x-hidden font-inter relative">
+      <Helmet>
+        <title>RespiScope | Next-Gen Respiratory Monitoring</title>
+        <meta name="description" content="AI-powered medical diagnostics and respiratory insights." />
+      </Helmet>
+
+      {/* Decorative Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-[150px] pointer-events-none" />
+
+      {/* --- HERO SECTION --- (Full Screen) */}
+      <section className="min-h-screen flex flex-col relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
+        {/* Navbar */}
+        <header className="py-6 flex items-center justify-between">
+          <div className="flex items-center gap-1 font-extrabold text-3xl tracking-tighter cursor-pointer">
+            <span className="text-cyan-400">Respi</span>
+            <span className="text-white">Scope</span>
+          </div>
+        </header>
+
+        {/* Hero Content */}
+        <div className="flex-1 flex w-full absolute inset-0 pt-[80px]">
+          
+          {/* Left Text Column */}
+          <div className="w-full lg:w-1/2 flex flex-col justify-center relative z-20 px-4 sm:px-6 lg:px-12 pointer-events-auto pb-20">
+            
+            {/* Avatars + Clients Metric */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-4 mb-8"
+            >
+              <div className="flex -space-x-2">
+                <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-[#0b101e] flex items-center justify-center text-[10px] font-bold text-teal-400">Dr.<br/>Vatsal</div>
+                <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-[#0b101e] flex items-center justify-center text-[10px] font-bold text-cyan-400">Dr.<br/>Sanyo</div>
+                <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-[#0b101e] flex items-center justify-center text-[10px] font-bold text-green-400">Dr.<br/>Allan</div>
+                <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-[#0b101e] flex items-center justify-center text-[10px] font-bold text-green-400 tracking-tighter">Dr.<br/>Adarsh</div>
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">RespiScope</h1>
+              <div className="flex flex-col">
+                <span className="text-2xl font-light text-white leading-none tracking-tight">+10K</span>
+                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mt-1">PATIENTS</span>
+              </div>
+            </motion.div>
+
+            {/* Main Headline */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl lg:text-7xl font-light tracking-tighter text-white mb-6 leading-[1.05]"
+            >
+              Next-Gen <br />
+              <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-green-400 to-cyan-400">Respiratory <br className="hidden lg:block"/> Monitoring</span> <br />
+              with AI Precision
+            </motion.h1>
+
+            {/* Subtext */}
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-slate-400 max-w-sm text-lg leading-relaxed mb-10"
+            >
+              RespiScope helps you track, understand, and act on your respiratory health — with smart AI insights and clean dashboards.
+            </motion.p>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <a 
+                href="#portal" 
+                className="group flex items-center w-fit bg-white rounded-full p-2 pl-6 pr-2 hover:bg-slate-200 transition-colors shadow-2xl shadow-cyan-500/20"
+              >
+                <span className="text-[#0b101e] font-semibold text-sm tracking-wide mr-6">Login / Dashboard</span>
+                <div className="w-10 h-10 rounded-full bg-cyan-400 flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                  <ArrowUpRight className="text-[#0b101e] w-5 h-5" />
+                </div>
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right Image Column */}
+          <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full flex items-end justify-end pointer-events-none opacity-50 lg:opacity-100 z-0">
+            <motion.img 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              src={heroBodyImage} 
+              alt="Glowing Human Anatomy" 
+              className="w-full h-[100%] object-cover object-right mix-blend-screen opacity-90 filter drop-shadow-[0_0_80px_rgba(45,212,191,0.2)]"
+              style={{ maskImage: 'linear-gradient(to right, transparent, black 40%)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* --- LOGIN PORTAL & FEATURES SECTION --- */}
+      <section id="portal" className="py-24 relative z-20 border-t border-white/5 bg-[#0b2b22]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-light text-white mb-4">Select your Portal</h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto rounded-full" />
+          </div>
+
+          {/* Login Cards */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Doctor Card */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-400/10 to-transparent rounded-3xl blur-md transition-all group-hover:blur-xl group-hover:from-teal-400/20" />
+              <div className="relative h-full bg-[#0b2b22] border border-white/5 rounded-3xl p-8 lg:p-12 flex flex-col items-start transition-transform group-hover:-translate-y-1">
+                <div className="w-14 h-14 bg-teal-400/10 rounded-2xl flex items-center justify-center mb-6 border border-teal-400/20">
+                  <Activity className="w-6 h-6 text-teal-400" />
+                </div>
+                <h3 className="text-2xl font-semibold text-white mb-3 tracking-tight">Healthcare Provider</h3>
+                <p className="text-slate-400 mb-8 text-sm leading-relaxed">
+                  Access patient records, upload stethoscope recordings, and utilize advanced AI diagnostic tools for precise care.
+                </p>
+                <Link to="/doctor-login" className="w-full mt-auto">
+                  <button className="w-full py-4 rounded-xl font-bold text-[#0b101e] bg-teal-400 hover:bg-teal-300 transition-colors shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                    Login as Doctor <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Patient Card */}
+            <div className="group relative">
+               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-3xl blur-md transition-all group-hover:blur-xl group-hover:from-cyan-400/20" />
+              <div className="relative h-full bg-[#0b2b22] border border-white/5 rounded-3xl p-8 lg:p-12 flex flex-col items-start transition-transform group-hover:-translate-y-1">
+                <div className="w-14 h-14 bg-cyan-400/10 rounded-2xl flex items-center justify-center mb-6 border border-cyan-400/20">
+                  <ShieldCheck className="w-6 h-6 text-cyan-400" />
+                </div>
+                <h3 className="text-2xl font-semibold text-white mb-3 tracking-tight">Patient Portal</h3>
+                <p className="text-slate-400 mb-8 text-sm leading-relaxed">
+                  View your medical records, audio consultation history, and AI diagnostic reports in a highly secure interface.
+                </p>
+                <Link to="/patient-login" className="w-full mt-auto">
+                  <button className="w-full py-4 rounded-xl font-bold text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                    Login as Patient <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Features Bottom Row */}
+          <div className="mt-24 grid md:grid-cols-3 gap-8 text-center max-w-5xl mx-auto border-t border-white/5 pt-16">
+            <div className="flex flex-col items-center">
+              <ShieldCheck className="w-8 h-8 text-teal-400 mb-4" />
+              <h4 className="text-lg font-semibold text-white mb-2">Military-Grade Security</h4>
+              <p className="text-slate-500 text-sm">HIPAA-compliant data encryption guarantees your biological insights stay private.</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <Activity className="w-8 h-8 text-cyan-400 mb-4" />
+              <h4 className="text-lg font-semibold text-white mb-2">AI Diagnostics</h4>
+              <p className="text-slate-500 text-sm">Trained algorithms instantly detect anomalies in lung audio data.</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <Wifi className="w-8 h-8 text-green-400 mb-4" />
+              <h4 className="text-lg font-semibold text-white mb-2">IoT Integration</h4>
+              <p className="text-slate-500 text-sm">Direct, seamless wireless connection from your RespiScope IoT stethoscope.</p>
             </div>
           </div>
         </div>
-      </header> */}
-      <Navbar userType="landing" userName="" userCode="" />
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-16 animate-[fadeIn_0.8s_ease-out]">
-          <h2 className="text-5xl font-bold text-gray-900 mb-4 animate-[slideUp_0.6s_ease-out]">
-            Welcome to{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              RespiScope Portal
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-[slideUp_0.8s_ease-out]">
-            Your comprehensive healthcare management system. Access patient
-            records, medical history, and AI-powered diagnostics all in one
-            secure platform.
-          </p>
-        </div>
-
-        {/* Login Options */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Doctor Login Card */}
-          <Card className="group hover:shadow-2xl transition-all duration-500 border-2 hover:border-green-300 hover:-translate-y-2 bg-white/80 backdrop-blur-sm animate-[slideRight_0.6s_ease-out] overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <CardHeader className="text-center pb-4 relative z-10">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
-                <svg
-                  className="w-8 h-8 text-green-600 group-hover:scale-110 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <CardTitle className="text-2xl text-green-700 group-hover:text-green-800 transition-colors duration-300">
-                Healthcare Provider
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center relative z-10">
-              <p className="text-gray-600 mb-6 group-hover:text-gray-700 transition-colors duration-300">
-                Access patient records, update medical information, and utilize
-                AI diagnostic tools to provide the best care for your patients.
-              </p>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center text-sm text-gray-500 group-hover:translate-x-2 transition-transform duration-300">
-                  <svg
-                    className="w-4 h-4 mr-2 text-green-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Full patient record access
-                </div>
-                <div className="flex items-center text-sm text-gray-500 group-hover:translate-x-2 transition-transform duration-300 delay-75">
-                  <svg
-                    className="w-4 h-4 mr-2 text-green-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  AI-powered diagnostics
-                </div>
-                <div className="flex items-center text-sm text-gray-500 group-hover:translate-x-2 transition-transform duration-300 delay-150">
-                  <svg
-                    className="w-4 h-4 mr-2 text-green-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Medical history management
-                </div>
-              </div>
-              <Link to="/doctor-login" className="block">
-                <Button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  Login as Doctor
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Patient Login Card */}
-          <Card className="group hover:shadow-2xl transition-all duration-500 border-2 hover:border-blue-300 hover:-translate-y-2 bg-white/80 backdrop-blur-sm animate-[slideLeft_0.6s_ease-out] overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <CardHeader className="text-center pb-4 relative z-10">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
-                <svg
-                  className="w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </div>
-              <CardTitle className="text-2xl text-blue-700 group-hover:text-blue-800 transition-colors duration-300">
-                Patient
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center relative z-10">
-              <p className="text-gray-600 mb-6 group-hover:text-gray-700 transition-colors duration-300">
-                View your medical records, track your health progress, and
-                access your diagnostic reports in a secure, easy-to-use
-                interface.
-              </p>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center text-sm text-gray-500 group-hover:translate-x-2 transition-transform duration-300">
-                  <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Personal health records
-                </div>
-                <div className="flex items-center text-sm text-gray-500 group-hover:translate-x-2 transition-transform duration-300 delay-75">
-                  <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Test results & reports
-                </div>
-                <div className="flex items-center text-sm text-gray-500 group-hover:translate-x-2 transition-transform duration-300 delay-150">
-                  <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Secure access anywhere
-                </div>
-              </div>
-              <Link to="/patient-login" className="block">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  Login as Patient
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Features Section */}
-        <div className="mt-20 text-center animate-[fadeIn_1s_ease-out]">
-          <h3 className="text-3xl font-bold text-gray-900 mb-8">
-            Why Choose RespiScope Portal?
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center group animate-[fadeIn_1.2s_ease-out] hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
-                <svg
-                  className="w-7 h-7 text-purple-600 group-hover:scale-110 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors duration-300">
-                Secure & Private
-              </h4>
-              <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                HIPAA-compliant security ensures your medical data stays
-                protected
-              </p>
-            </div>
-            <div className="flex flex-col items-center group animate-[fadeIn_1.4s_ease-out] hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
-                <svg
-                  className="w-7 h-7 text-orange-600 group-hover:scale-110 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-orange-700 transition-colors duration-300">
-                AI-Powered
-              </h4>
-              <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                Advanced AI diagnostics help healthcare providers make better
-                decisions
-              </p>
-            </div>
-            <div className="flex flex-col items-center group animate-[fadeIn_1.6s_ease-out] hover:-translate-y-2 transition-transform duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
-                <svg
-                  className="w-7 h-7 text-teal-600 group-hover:scale-110 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                  />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-teal-700 transition-colors duration-300">
-                Easy to Use
-              </h4>
-              <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                Intuitive interface designed for both patients and healthcare
-                providers
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-gray-50 to-gray-100 border-t mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-500">
-            <p>&copy; 2024 RespiScope Portal. All rights reserved.</p>
-          </div>
-        </div>
+      <footer className="border-t border-white/5 bg-[#0b2b22] py-8 text-center text-slate-500 text-sm">
+        &copy; {new Date().getFullYear()} RespiScope Systems. All rights reserved.
       </footer>
-
-      <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slideRight {
-          from {
-            opacity: 0;
-            transform: translateX(-50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes slideLeft {
-          from {
-            opacity: 0;
-            transform: translateX(50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </div>
   );
-}
+};
 
-export default Landing
+export default Landing;
