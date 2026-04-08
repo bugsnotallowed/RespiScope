@@ -27,9 +27,9 @@ const DoctorDashboard = () => {
   ]
 
 
-  const [patients, setPatients] = useState([]);
+  const [_patients, setPatients] = useState([]);
   const [consultations, setConsultations] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [_messages, setMessages] = useState([]);
 
   useEffect(() => {
     const fetchPatients = async () => {
