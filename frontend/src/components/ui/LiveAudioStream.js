@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { API_URL } from "../../config";
 
 /**
  * Ventilator-style Line Graph (Sweep)
@@ -13,7 +14,6 @@ export default function LiveAudioStream({ consultationId }) {
     useEffect(() => {
         if (!isMonitoring) return;
 
-        const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
         const WS_URL = API_URL.replace("http", "ws").replace("/api", "/iot-stream") + `?consultationId=${consultationId}&device=browser`;
 
         const socket = new WebSocket(WS_URL);

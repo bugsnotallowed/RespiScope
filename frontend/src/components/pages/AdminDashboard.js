@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import { API_URL } from '../../config';
 import { 
   Menu, Moon, Users, TrendingUp, User, Trash2, 
   Settings, FileText, Wifi 
@@ -15,7 +16,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/admin/dashboard', {
+        const response = await axios.get(`${API_URL}/admin/dashboard`, {
           withCredentials: true
         });
         setData(response.data);

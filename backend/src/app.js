@@ -31,7 +31,12 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: [
+      process.env.CORS_ORIGIN?.replace(/\/$/, ""), 
+      process.env.CORS_ORIGIN, 
+      "http://localhost:3000",
+      "http://localhost:5173"
+    ].filter(Boolean),
     credentials: true,
   })
 );

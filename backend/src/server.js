@@ -11,7 +11,12 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: [
+      process.env.CORS_ORIGIN?.replace(/\/$/, ""),
+      process.env.CORS_ORIGIN,
+      "http://localhost:3000",
+      "http://localhost:5173"
+    ].filter(Boolean),
     credentials: true,
   },
 });

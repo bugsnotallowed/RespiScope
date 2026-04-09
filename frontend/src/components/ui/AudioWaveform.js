@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { API_URL } from "../../config";
 
 /**
  * Ventilator-style Line Graph for Static Audio Files
@@ -11,7 +12,6 @@ const AudioWaveform = ({ fileId, peaks = [] }) => {
     if (!fileId || !canvasRef.current) return;
 
     let cancelled = false;
-    const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
     const FILE_URL = `${API_URL}/messages/file/public/${fileId}`;
 
     const canvas = canvasRef.current;
