@@ -56,7 +56,7 @@ const PatientDetails = () => {
     try {
       const res = await api.post(`/audio/process/${messageId}`);
       if (res.data && res.data.data) {
-        setAudioMessages(prev => [res.data.data, ...prev]);
+        setAudioMessages(prev => prev.map(m => m._id === messageId ? res.data.data : m));
       }
       alert("Filter applied successfully!");
     } catch (err) {
@@ -67,15 +67,32 @@ const PatientDetails = () => {
 
   const runAIAnalysis = async (messageId) => {
     try {
+      setAudioMessages(prev => prev.map(m => m._id === messageId ? { ...m, aiAnalysis: { status: 'pending' } } : m));
       const res = await api.post(`/audio/ai-analyze/${messageId}`);
-      // The update will likely come through a manual refresh or we can update local state
-      alert("AI Analysis triggered successfully!");
-      // Optionally refresh messages
-      api.get(`/messages/consultation/${selectedConsultation._id}/audio`)
-        .then((res) => setAudioMessages(res.data));
+      
+      // Update with the completed message from response
+      if (res.data?.results) {
+        setAudioMessages(prev => prev.map(m => 
+          m._id === messageId ? { 
+            ...m, 
+            aiAnalysis: {
+              label: res.data.results.label,
+              confidence: res.data.results.confidence,
+              peaks: res.data.results.abnormal_peaks,
+              spectrogram: res.data.results.spectrogram,
+              status: "completed"
+            }
+          } : m
+        ));
+      } else {
+        // Fallback fetch
+        api.get(`/messages/consultation/${selectedConsultation._id}/audio`)
+          .then((res) => setAudioMessages(res.data));
+      }
     } catch (err) {
       console.error("Error triggering AI", err);
       alert("AI Analysis failed: " + (err.response?.data?.error || err.message));
+      setAudioMessages(prev => prev.map(m => m._id === messageId ? { ...m, aiAnalysis: { status: 'failed' } } : m));
     }
   }
 
@@ -200,12 +217,13 @@ const PatientDetails = () => {
                         >
                           Run DSP Filter
                         </Button>
-                      ) : (!msg.aiAnalysis || msg.aiAnalysis.status === 'failed') ? (
+                      ) : (msg.aiAnalysis?.status !== 'completed') ? (
                         <Button
                           onClick={() => runAIAnalysis(msg._id)}
+                          disabled={msg.aiAnalysis?.status === 'pending'}
                           className="bg-teal-600 hover:bg-teal-700 text-white w-full"
                         >
-                          Run AI Diagnostics
+                          {msg.aiAnalysis?.status === 'pending' ? 'Computing Analysis...' : 'Run AI Diagnostics'}
                         </Button>
                       ) : (
                         <div className="text-center py-2 bg-green-50 text-green-700 rounded-lg text-xs font-bold border border-green-100">
@@ -217,7 +235,7 @@ const PatientDetails = () => {
 
                   {/* AI Analysis Column */}
                   <div className="flex flex-col justify-center">
-                    {msg.aiAnalysis ? (
+                    {msg.aiAnalysis?.status === 'completed' ? (
                       <AIAnalysisCard analysis={msg.aiAnalysis} />
                     ) : (
                       <div className="h-full bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center p-8 text-center">
