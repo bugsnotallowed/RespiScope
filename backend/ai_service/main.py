@@ -2,6 +2,12 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 import uvicorn
 import shutil
 import os
+import sys
+import io
+
+if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 from processor import AudioAIProcessor
 
 app = FastAPI()

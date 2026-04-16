@@ -8,3 +8,7 @@ matplotlib
 scikit-learn
 pydantic
 soundfile
+torch
+torchaudio
+tqdm
+torchcodec

@@ -60,7 +60,7 @@ const PatientDetails = () => {
     try {
       const res = await api.post(`/audio/process/${messageId}`);
       if (res.data && res.data.data) {
-        setAudioMessages(prev => [res.data.data, ...prev]);
+        setAudioMessages(prev => prev.map(m => m._id === messageId ? res.data.data : m));
       }
       addToast("Filter applied successfully!", "success");
     } catch (err) {
@@ -71,14 +71,32 @@ const PatientDetails = () => {
 
   const runAIAnalysis = async (messageId) => {
     try {
+      setAudioMessages(prev => prev.map(m => m._id === messageId ? { ...m, aiAnalysis: { status: 'pending' } } : m));
       const res = await api.post(`/audio/ai-analyze/${messageId}`);
-      if (res.data && res.data.data) {
-        setAudioMessages(prev => prev.map(m => m._id === messageId ? res.data.data : m));
+      
+      // Update with the completed message from response
+      if (res.data?.results) {
+        setAudioMessages(prev => prev.map(m => 
+          m._id === messageId ? { 
+            ...m, 
+            aiAnalysis: {
+              label: res.data.results.label,
+              confidence: res.data.results.confidence,
+              peaks: res.data.results.abnormal_peaks,
+              spectrogram: res.data.results.spectrogram,
+              status: "completed"
+            }
+          } : m
+        ));
+      } else {
+        // Fallback fetch
+        api.get(`/messages/consultation/${selectedConsultation._id}/audio`)
+          .then((res) => setAudioMessages(res.data));
       }
-      addToast("AI Analysis completed successfully!", "success");
     } catch (err) {
       console.error("Error triggering AI", err);
-      addToast("AI Analysis failed: " + (err.response?.data?.error || err.message), "error");
+      alert("AI Analysis failed: " + (err.response?.data?.error || err.message));
+      setAudioMessages(prev => prev.map(m => m._id === messageId ? { ...m, aiAnalysis: { status: 'failed' } } : m));
     }
   };
   const FILE_BASE_URL = BASE_API_URL.replace("/api", "/api/messages/file/public");
@@ -207,45 +225,43 @@ const PatientDetails = () => {
                         className="w-full mt-3 h-10 opacity-80"
                       />
 
-                      <div className="flex flex-col gap-2 pt-2 border-t border-white/10">
-                        {!msg.filteredFileId ? (
-                          <Button
-                            variant="primary"
-                            onClick={() => processAudio(msg._id)}
-                            className="w-full"
-                          >
-                            Run DSP Filter
-                          </Button>
-                        ) : (!msg.aiAnalysis || msg.aiAnalysis.status === 'failed') ? (
-                          <Button
-                            variant="primary"
-                            onClick={() => runAIAnalysis(msg._id)}
-                            className="w-full bg-indigo-600/80 hover:bg-indigo-600 text-indigo-50 border-indigo-500/50 shadow-[0_0_15px_rgba(79,70,229,0.4)]"
-                          >
-                            Run AI Diagnostics
-                          </Button>
-                        ) : (
-                          <div className="text-center py-3 bg-teal-500/10 text-teal-300 rounded-xl text-xs font-bold border border-teal-500/20 tracking-wider">
-                            AI ANALYSIS COMPLETE
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* AI Analysis Column */}
-                    <div className="flex flex-col justify-center p-6 bg-black/20">
-                      {msg.aiAnalysis ? (
-                        <AIAnalysisCard analysis={msg.aiAnalysis} />
+                    <div className="flex flex-col gap-2 pt-4 border-t border-gray-50">
+                      {!msg.filteredFileId ? (
+                        <Button
+                          onClick={() => processAudio(msg._id)}
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white w-full"
+                        >
+                          Run DSP Filter
+                        </Button>
+                      ) : (msg.aiAnalysis?.status !== 'completed') ? (
+                        <Button
+                          onClick={() => runAIAnalysis(msg._id)}
+                          disabled={msg.aiAnalysis?.status === 'pending'}
+                          className="bg-teal-600 hover:bg-teal-700 text-white w-full"
+                        >
+                          {msg.aiAnalysis?.status === 'pending' ? 'Computing Analysis...' : 'Run AI Diagnostics'}
+                        </Button>
                       ) : (
-                        <div className="h-full rounded-2xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center p-8 text-center bg-white/5 backdrop-blur-sm">
-                          <Activity className="w-12 h-12 text-teal-900/40 mb-4" />
-                          <h5 className="text-teal-200/60 font-bold uppercase tracking-wider text-sm">Waiting for Processing</h5>
-                          <p className="text-teal-200/40 text-xs mt-2 max-w-[200px]">Diagnostic insights from the AI will appear here.</p>
+                        <div className="text-center py-2 bg-green-50 text-green-700 rounded-lg text-xs font-bold border border-green-100">
+                          AI ANALYSIS COMPLETE
                         </div>
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+
+                  {/* AI Analysis Column */}
+                  <div className="flex flex-col justify-center">
+                    {msg.aiAnalysis?.status === 'completed' ? (
+                      <AIAnalysisCard analysis={msg.aiAnalysis} />
+                    ) : (
+                      <div className="h-full bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center p-8 text-center">
+                        <Activity className="w-12 h-12 text-gray-300 mb-4" />
+                        <h5 className="text-gray-400 font-bold">Waiting for Processing</h5>
+                        <p className="text-gray-400 text-xs">Diagnostic insights and spectrogram will appear here after filtering and AI analysis.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
               );
             })}
           </div>
