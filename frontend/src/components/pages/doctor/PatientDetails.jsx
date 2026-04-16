@@ -77,16 +77,7 @@ const PatientDetails = () => {
       // Update with the completed message from response
       if (res.data?.results) {
         setAudioMessages(prev => prev.map(m => 
-          m._id === messageId ? { 
-            ...m, 
-            aiAnalysis: {
-              label: res.data.results.label,
-              confidence: res.data.results.confidence,
-              peaks: res.data.results.abnormal_peaks,
-              spectrogram: res.data.results.spectrogram,
-              status: "completed"
-            }
-          } : m
+          m._id === messageId ? res.data.results : m
         ));
       } else {
         // Fallback fetch
@@ -261,7 +252,8 @@ const PatientDetails = () => {
                       </div>
                     )}
                   </div>
-                </div>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
