@@ -37,7 +37,8 @@ const analyzeAudioWithAI = async (messageId, io) => {
       contentType: "audio/wav",
     });
 
-    const aiResponse = await axios.post("http://localhost:8001/analyze", form, {
+    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:8001";
+    const aiResponse = await axios.post(`${aiServiceUrl}/analyze`, form, {
       headers: { ...form.getHeaders() },
     });
 
@@ -109,7 +110,8 @@ const processAudioWithNode = async (req, res) => {
       contentType: "audio/webm",
     });
 
-    const filterResponse = await axios.post("http://localhost:8001/filter?filter_type=heart", form, {
+    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:8001";
+    const filterResponse = await axios.post(`${aiServiceUrl}/filter?filter_type=heart`, form, {
       headers: { ...form.getHeaders() },
       responseType: 'arraybuffer'
     });
