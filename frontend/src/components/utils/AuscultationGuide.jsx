@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, CheckCircle, ChevronRight, Activity, Info, RefreshCcw, Heart, User, Send, Save } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -49,6 +49,10 @@ const AuscultationGuide = () => {
   const [sessionNotes, setSessionNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Refs for audio recording
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+
   // Fetch doctors on mount
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -81,7 +85,9 @@ const AuscultationGuide = () => {
       }, 1000);
     } else if (isRecording && timeLeft === 0) {
       setIsRecording(false);
-      handleFinishPoint();
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        mediaRecorderRef.current.stop();
+      }
     }
     return () => clearInterval(timer);
   }, [isRecording, timeLeft]);
@@ -94,36 +100,69 @@ const AuscultationGuide = () => {
 
     try {
       // 1. Start or fetch consultation if not already started
-      if (!currentConsultation) {
-        const consultation = await createConsultation(selectedDoctorId, activeOrgan);
-        setCurrentConsultation(consultation);
+      let tempConsultation = currentConsultation;
+      if (!tempConsultation) {
+        tempConsultation = await createConsultation(selectedDoctorId, activeOrgan);
+        setCurrentConsultation(tempConsultation);
       }
 
+      // Request microphone access
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunksRef.current = [];
+      
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        // Stop all tracks in the stream to release the mic
+        stream.getTracks().forEach(track => track.stop());
+
+        // Create the audio blob
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        
+        try {
+          const point = currentPointsArray[activeStep];
+          const fileName = `${point.name.toLowerCase().replace(/ /g, "_")}_${Date.now()}.wav`;
+          
+          const formData = new FormData();
+          formData.append("file", audioBlob, fileName);
+          formData.append("pointName", point.name.toLowerCase().replace(/ /g, "_"));
+          formData.append("sequence", activeStep + 1);
+          formData.append("duration", RECORDING_DURATION);
+
+          await addRecordingPoint(tempConsultation._id, formData);
+          
+          setCompletedSteps((prev) => [...prev, activeStep]);
+        } catch (error) {
+          console.error("Failed to save recording point", error);
+          alert("Failed to upload audio recording: " + error.message);
+        }
+      };
+
+      mediaRecorder.start();
       setIsRecording(true);
       setTimeLeft(RECORDING_DURATION);
     } catch (error) {
-      alert("Failed to start session: " + error.message);
+      alert("Failed to start session or obtain microphone permission: " + error.message);
     }
   };
 
-  const handleFinishPoint = async () => {
-    if (!completedSteps.includes(activeStep)) {
-      setCompletedSteps((prev) => [...prev, activeStep]);
-      
-      // 2. Save recording point to backend
-      try {
-        const point = currentPointsArray[activeStep];
-        await addRecordingPoint(currentConsultation._id, {
-          pointName: point.name.toLowerCase().replace(/ /g, "_"),
-          sequence: activeStep + 1,
-          duration: RECORDING_DURATION,
-          audioUrl: "https://example.com/audio.wav", // Placeholder for now
-          rawFileName: `${point.name}_${Date.now()}.wav`
-        });
-      } catch (error) {
-        console.error("Failed to save recording point", error);
+  const handleCancelRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.onstop = null;
+      mediaRecorderRef.current.stop();
+      if (mediaRecorderRef.current.stream) {
+        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
       }
     }
+    setIsRecording(false);
+    setTimeLeft(RECORDING_DURATION);
   };
 
   const handleSubmitSession = async () => {
@@ -353,7 +392,7 @@ const AuscultationGuide = () => {
                 Start Point
               </Button>
             ) : isRecording ? (
-              <Button variant="outline" onClick={() => { setIsRecording(false); setTimeLeft(RECORDING_DURATION); }}
+              <Button variant="outline" onClick={handleCancelRecording}
                 className="flex-1 bg-black/40 border-zinc-500/50 text-zinc-300"
               >
                 <Pause className="w-4 h-4 mr-2" />

@@ -465,12 +465,12 @@ const PatientDashboard = () => {
         {/* ---------- REVIEW MODAL ---------- */}
         <AnimatePresence>
           {isReviewModalOpen && selectedReview && selectedConsultation && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="bg-[#0b2b22] border border-teal-500/30 rounded-3xl w-full max-w-3xl overflow-hidden shadow-[0_0_50px_rgba(20,184,166,0.2)]"
+                className="bg-[#0b2b22] border border-teal-500/30 rounded-3xl w-full max-w-5xl overflow-hidden shadow-[0_0_50px_rgba(20,184,166,0.2)]"
               >
                 <div className="p-6 border-b border-white/10 flex items-center justify-between bg-teal-500/5">
                   <div className="flex items-center gap-3">

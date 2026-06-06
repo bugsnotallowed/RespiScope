@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const consultationController = require("../controllers/consultationController");
 const auth = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
 
 // Base path: /api/consultations
 
@@ -18,7 +19,7 @@ router.get("/doctor", auth("doctor"), consultationController.getDoctorConsultati
 router.get("/doctor/patient/:patientId", auth("doctor"), consultationController.getPatientConsultationsForDoctor);
 
 // Add a recording point to a specific consultation
-router.post("/:consultationId/points", auth("patient"), consultationController.addRecordingPoint);
+router.post("/:consultationId/points", auth("patient"), upload.single("file"), consultationController.addRecordingPoint);
 
 // Complete a consultation session
 router.post("/:consultationId/complete", auth("patient"), consultationController.completeConsultation);

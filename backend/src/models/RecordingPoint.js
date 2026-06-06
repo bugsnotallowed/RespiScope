@@ -13,7 +13,7 @@ const RecordingPointSchema = new mongoose.Schema({
   aiAnalysis: {
     label: String,
     confidence: Number,
-    status: { type: String, enum: ['pending', 'completed', 'failed'], default: null }
+    status: { type: String, enum: ['pending', 'completed', 'failed'] }
   }
 }, { timestamps: true });
 

@@ -11,6 +11,15 @@ import { Card, CardContent } from '../../ui/Card';
 import Navbar from '../../utils/Navbar';
 import { getConsultationDetails } from '../../../services/api/consultationService';
 import { submitReview } from '../../../services/api/reviewService';
+import { API_URL } from '../../../config';
+
+const getAudioSource = (point) => {
+  if (!point) return "";
+  if (point.filteredFileId || point.fileId) {
+    return `${API_URL}/messages/file/public/${point.filteredFileId || point.fileId}`;
+  }
+  return point.audioUrl;
+};
 
 const SessionReview = () => {
   const { consultationId } = useParams();
@@ -134,12 +143,12 @@ const SessionReview = () => {
                         </div>
                         <Button 
                           size="sm" 
-                          variant={activeAudio === point.audioUrl ? "default" : "outline"}
-                          className={activeAudio === point.audioUrl ? "bg-teal-500" : ""}
-                          onClick={() => toggleAudio(point.audioUrl)}
+                          variant={activeAudio === point._id ? "default" : "outline"}
+                          className={activeAudio === point._id ? "bg-teal-500" : ""}
+                          onClick={() => toggleAudio(point._id)}
                         >
-                          {activeAudio === point.audioUrl ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
-                          {activeAudio === point.audioUrl ? 'Playing' : 'Listen'}
+                          {activeAudio === point._id ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
+                          {activeAudio === point._id ? 'Playing' : 'Listen'}
                         </Button>
                       </div>
                     ))}
@@ -149,7 +158,7 @@ const SessionReview = () => {
                     <div className="mt-6 p-4 bg-teal-500/10 border border-teal-500/20 rounded-2xl animate-in slide-in-from-bottom-2">
                       <p className="text-xs font-bold text-teal-400 uppercase tracking-widest mb-2">Player Context</p>
                       <audio 
-                        src={activeAudio} 
+                        src={getAudioSource(recordingPoints?.find(p => p._id === activeAudio))} 
                         controls 
                         autoPlay 
                         className="w-full h-8"

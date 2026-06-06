@@ -45,13 +45,25 @@ exports.addRecordingPoint = async (req, res) => {
     const { consultationId } = req.params;
     const { pointName, sequence, duration, audioUrl, rawFileName } = req.body;
 
+    // Handle uploaded file details from GridFS storage engine (multer-gridfs-storage)
+    const fileId = req.file ? req.file.id : undefined;
+    const finalAudioUrl = req.file 
+      ? `${req.protocol}://${req.get("host")}/api/messages/file/public/${req.file.id}` 
+      : audioUrl;
+    const finalRawFileName = req.file ? req.file.originalname : rawFileName;
+
+    // Parse numeric parameters which are passed as string inside multipart/form-data
+    const parsedSequence = sequence ? parseInt(sequence, 10) : undefined;
+    const parsedDuration = duration ? parseInt(duration, 10) : undefined;
+
     const recordingPoint = new RecordingPoint({
       consultationId,
       pointName,
-      sequence,
-      duration,
-      audioUrl,
-      rawFileName,
+      sequence: parsedSequence,
+      duration: parsedDuration,
+      audioUrl: finalAudioUrl,
+      fileId,
+      rawFileName: finalRawFileName,
       recordedAt: new Date()
     });
 
